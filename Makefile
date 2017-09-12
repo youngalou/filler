@@ -15,6 +15,8 @@ CFLAG = -Wall -Werror -Wextra -g
 LIBFT = libft/libft.a
 
 FILES = main.c \
+		read.c \
+		heatmap.c \
 
 SRC = $(addprefix src/, $(FILES))
 

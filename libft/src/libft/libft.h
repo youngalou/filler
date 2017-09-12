@@ -6,7 +6,7 @@
 /*   By: lyoung <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 10:33:17 by lyoung            #+#    #+#             */
-/*   Updated: 2017/06/15 11:17:01 by lyoung           ###   ########.fr       */
+/*   Updated: 2017/09/11 11:09:18 by lyoung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void				ft_memdel(void **ap);
 ** --------------- Converters ---------------
 */
 
+int					ft_abs(int nb);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_atoi(char *str);

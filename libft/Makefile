@@ -6,7 +6,7 @@
 #    By: lyoung <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/27 10:39:14 by lyoung            #+#    #+#              #
-#    Updated: 2017/06/15 11:17:33 by lyoung           ###   ########.fr        #
+#    Updated: 2017/09/11 11:10:00 by lyoung           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ LIBFT = ft_putchar.c \
 	   ft_memcmp.c \
 	   ft_memalloc.c \
 	   ft_memdel.c \
+	   ft_abs.c \
 	   ft_toupper.c \
 	   ft_tolower.c \
 	   ft_atoi.c \
