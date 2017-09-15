@@ -17,6 +17,7 @@ LIBFT = libft/libft.a
 FILES = main.c \
 		read.c \
 		heatmap.c \
+		trim_piece.c \
 
 SRC = $(addprefix src/, $(FILES))
 

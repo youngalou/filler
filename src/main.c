@@ -18,12 +18,12 @@ void	print_map(t_filler *data)
 	int 	x;
 
 	y = 0;
-	while (y < data->map_y)
+	while (y < data->map.bound_y)
 	{
 		x = 0;
-		while (x < data->map_x)
+		while (x < data->map.bound_x)
 		{
-			ft_printf("%4d", data->heatmap[y][x]);
+			ft_printf("%4d", data->map.heatmap[y][x]);
 			x++;
 		}
 		ft_printf("\n");
@@ -31,23 +31,41 @@ void	print_map(t_filler *data)
 	}
 }
 
+void	print_piece(t_filler *data)
+{
+	int		y;
+	int		x;
+
+	y = 0;
+	while (y < data->piece.trim_y)
+	{
+		x = 0;
+		while (x < data->piece.trim_x)
+		{
+			ft_printf("%c ", data->piece.trimmed[y][x]);
+			x++;
+		}
+		ft_printf("\n");
+		y++;
+	}
+}
 
 void	set_map(t_filler *data)
 {
 	int		i;
 
-	data->map = (char **)malloc(sizeof(char *) * data->map_y);
+	data->map.board = (char **)malloc(sizeof(char *) * data->map.bound_y);
 	i = 0;
-	while (i < data->map_y)
+	while (i < data->map.bound_y)
 	{
-		data->map[i] = ft_strnew(data->map_x);
+		data->map.board[i] = ft_strnew(data->map.bound_x);
 		i++;
 	}
-	data->heatmap = (int **)malloc(sizeof(int *) * data->map_y);
+	data->map.heatmap = (int **)malloc(sizeof(int *) * data->map.bound_y);
 	i = 0;
-	while (i < data->map_y)
+	while (i < data->map.bound_y)
 	{
-		data->heatmap[i] = (int *)malloc(sizeof(int) * data->map_x);
+		data->map.heatmap[i] = (int *)malloc(sizeof(int) * data->map.bound_x);
 		i++;
 	}
 }
@@ -61,14 +79,14 @@ void	get_map(t_filler *data)
 	i = 0;
 	while (!ft_isdigit(line[i]))
 		i++;
-	data->map_y = ft_atoi(&line[i]);
+	data->map.bound_y = ft_atoi(&line[i]);
 	while (ft_isdigit(line[i]))
 		i++;
 	while (!ft_isdigit(line[i]))
 		i++;
-	data->map_x = ft_atoi(&line[i]);
-	data->range_y = data->map_y / 3;
-	data->range_x = data->map_x / 6;
+	data->map.bound_x = ft_atoi(&line[i]);
+	data->map.range_y = data->map.bound_y / 3;
+	data->map.range_x = data->map.bound_x / 6;
 	set_map(data);
 	ft_strdel(&line);
 }
@@ -83,8 +101,8 @@ void	get_player(t_filler *data)
 	tmp = ft_strchr(line, 'p');
 	tmp++;
 	nb = ft_atoi(tmp);
-	data->player = (nb == 1) ? 'O' : 'X';
-	data->opponent = (nb == 1) ? 'X' : 'O';
+	data->player.ch = (nb == 1) ? 'O' : 'X';
+	data->opponent.ch = (nb == 1) ? 'X' : 'O';
 	ft_strdel(&line);
 }
 
@@ -92,21 +110,11 @@ t_filler	*init_data(void)
 {
 	t_filler	*data;
 	data = (t_filler*)malloc(sizeof(t_filler));
-	data->player = 0;
-	data->opponent = 0;
-	data->map_x = 0;
-	data->map_y = 0;
-	data->map = 0;
-	data->piece_x = 0;
-	data->piece_y = 0;
-	data->piece = 0;
-	data->heatmap = 0;
-	data->range_x = 0;
-	data->range_y = 0;
-	data->max_x = 0;
-	data->max_y = 0;
-	data->min_x = INT_MAX;
-	data->min_y = INT_MAX;
+	data->opponent.max_x = 0;
+	data->opponent.max_y = 0;
+	data->opponent.min_x = INT_MAX;
+	data->opponent.min_y = INT_MAX;
+	data->init_flag = 0;
 	return (data);
 }
 
@@ -124,8 +132,9 @@ int     main(void)
 		read_map(data);
 		set_heatmap(data);
 		print_map(data);
-		//get_piece(data);
-		return (0);
+		get_piece(data);
+		set_newpiece(data);
+		print_piece(data);
 	}
 	return (0);
 }

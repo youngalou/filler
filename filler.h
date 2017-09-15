@@ -15,24 +15,54 @@
 # define HEATMAX 100
 # define DIV 2
 
-typedef struct      s_filler
+typedef struct		s_player
 {
-    char            player;
-    char            opponent;
-	int				map_x;
-	int				map_y;
-	char			**map;
-	int				piece_x;
-	int				piece_y;
-	char			**piece;
-	int				**heatmap;
-	int 			range_x;
-	int 			range_y;
-	int 			max_x;
+	char			ch;
+	int				max_x;
 	int				max_y;
-	int				min_x;
-	int 			min_y;
-}                   t_filler;
+	int 			min_x;
+	int				min_y;
+	int 			init_x;
+	int 			init_y;
+}					t_player;
+
+typedef struct		s_opponent
+{
+	char			ch;
+	int				max_x;
+	int				max_y;
+	int 			min_x;
+	int				min_y;
+}					t_opponent;
+
+typedef struct		s_map
+{
+	char			**board;
+	int				bound_x;
+	int 			bound_y;
+	int 			range_x;
+	int				range_y;
+	int				**heatmap;
+}					t_map;
+
+typedef struct		s_piece
+{
+	char 			**piece;
+	int 			size_x;
+	int 			size_y;
+	char			**trimmed;
+	int 			trim_x;
+	int 			trim_y;
+}					t_piece;
+
+typedef struct      	s_filler
+{
+    struct s_player		player;
+    struct s_opponent	opponent;
+	struct s_map		map;
+	struct s_piece		piece;
+	int					init_flag;
+}                   	t_filler;
 
 /*
 ** --------------- main.c --------------
@@ -58,3 +88,17 @@ void		set_piece(t_filler *data);
 
 void		fill_heatmap(t_filler *data, int level);
 void		set_heatmap(t_filler *data);
+
+/*
+** --------------- trim_piece.c --------------
+*/
+
+int			get_topmargin(t_filler *data);
+int			get_leftmargin(t_filler *data);
+int			get_bottommargin(t_filler *data);
+int			get_rightmargin(t_filler *data);
+void		set_newpiece(t_filler *data);
+
+/*
+** --------------- place_piece.c --------------
+*/

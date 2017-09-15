@@ -12,40 +12,29 @@
 
 #include "../filler.h"
 
-/*void	set_heatmap(t_filler *data)
-{
-	int		i;
-	int		j;
-	int		shift_x;
-	int		shift_y;
-
-	data->heatmap = (int **)malloc(sizeof(int *) * data->map_y);
-	i = 0;
-	while (i < data->map_y)
-	{
-		data->heatmap[i] = (int *)malloc(sizeof(int) * data->map_x);
-		i++;
-	}
-	shift_x = data->map_x / 2;
-	shift_y = data->map_y / 2;
-	i = 0;
-	while (i < data->map_y)
-	{
-		j = 0;
-		while (j < data->map_x)
-		{
-			data->heatmap[i][j] = ft_abs((i - shift_y) * (j - shift_x));
-			j++;
-		}
-		i++;
-	}
-}*/
-
-/*void	fill_heatmap(t_filler *data)
-{
-}*/
-
 void	set_cross(t_filler *data)
+{
+	int 	y;
+	int 	x;
+	int		i;
+
+	y = data->player.init_y;
+	x = data->player.init_x;
+	i = 0;
+	while (i < data->map.bound_x)
+	{
+		data->map.heatmap[y][i] = 1;
+		i++;
+	}
+	i = 0;
+	while (i < data->map.bound_y)
+	{
+		data->map.heatmap[i][x] = 1;
+		i++;
+	}
+}
+
+void	set_box(t_filler *data)
 {
 	int		max_x;
 	int		max_y;
@@ -53,26 +42,26 @@ void	set_cross(t_filler *data)
 	int 	min_y;
 	int 	i;
 
-	max_x = data->max_x + data->range_x;
-	max_y = data->max_y + data->range_y;
-	min_x = data->min_x - data->range_x;
-	min_y = data->min_y - data->range_y;
+	max_x = data->opponent.max_x + data->map.range_x;
+	max_y = data->opponent.max_x + data->map.range_y;
+	min_x = data->opponent.min_x - data->map.range_x;
+	min_y = data->opponent.min_y - data->map.range_y;
 	i = (min_y >= 0) ? min_y : 0;
 	while (i <= max_y)
 	{
-		if (max_x < data->map_x)
-			data->heatmap[i][max_x] = HEATMAX;
+		if (max_x < data->map.bound_x)
+			data->map.heatmap[i][max_x] = HEATMAX;
 		if (min_x >= 0)
-		data->heatmap[i][min_x] = HEATMAX;
+			data->map.heatmap[i][min_x] = HEATMAX;
 		i++;
 	}
 	i = (min_x >= 0) ? min_x : 0;
 	while (i <= max_x)
 	{
-		if (max_y < data->map_y)
-			data->heatmap[max_y][i] = HEATMAX;
+		if (max_y < data->map.bound_y)
+			data->map.heatmap[max_y][i] = HEATMAX;
 		if (min_y >= 0)
-		data->heatmap[min_y][i] = HEATMAX;
+			data->map.heatmap[min_y][i] = HEATMAX;
 		i++;
 	}
 }
@@ -86,22 +75,22 @@ void	fill_heatmap(t_filler *data, int level)
 	if (level <= 1)
 		return ;
 	y = 0;
-	while (y < data->map_y)
+	while (y < data->map.bound_y)
 	{
 		x = 0;
-		while (x < data->map_x)
+		while (x < data->map.bound_x)
 		{
-			if (data->heatmap[y][x] > 0)
+			if (data->map.heatmap[y][x] > 0)
 			{
-				val = data->heatmap[y][x];
-				if (x - 1 >= 0 && data->heatmap[y][x - 1] < val && data->heatmap[y][x - 1] >= 0)
-					data->heatmap[y][x - 1] = val / DIV;
-				if (x + 1 < data->map_x && data->heatmap[y][x + 1] < val && data->heatmap[y][x + 1] >= 0)
-					data->heatmap[y][x + 1] = val / DIV;
-				if (y - 1 >= 0 && data->heatmap[y - 1][x] < val && data->heatmap[y - 1][x] >= 0)
-					data->heatmap[y - 1][x] = val / DIV;
-				if (y + 1 < data->map_y && data->heatmap[y + 1][x] < val && data->heatmap[y + 1][x] >= 0)
-					data->heatmap[y + 1][x] = val / DIV;
+				val = data->map.heatmap[y][x];
+				if (x - 1 >= 0 && data->map.heatmap[y][x - 1] < val && data->map.heatmap[y][x - 1] >= 0)
+					data->map.heatmap[y][x - 1] = val / DIV;
+				if (x + 1 < data->map.bound_x && data->map.heatmap[y][x + 1] < val && data->map.heatmap[y][x + 1] >= 0)
+					data->map.heatmap[y][x + 1] = val / DIV;
+				if (y - 1 >= 0 && data->map.heatmap[y - 1][x] < val && data->map.heatmap[y - 1][x] >= 0)
+					data->map.heatmap[y - 1][x] = val / DIV;
+				if (y + 1 < data->map.bound_y && data->map.heatmap[y + 1][x] < val && data->map.heatmap[y + 1][x] >= 0)
+					data->map.heatmap[y + 1][x] = val / DIV;
 			}
 			x++;
 		}
@@ -115,29 +104,35 @@ void	set_heatmap(t_filler *data)
 	int		y;
 	int		x;
 
-	//ft_printf("%d\t%d\n", data->map_x, data->map_y);
 	y = 0;
-	while (y < data->map_y)
+	while (y < data->map.bound_y)
 	{
 		x = 0;
-		while (x < data->map_x)
+		while (x < data->map.bound_x)
 		{
-			if (ft_toupper(data->map[y][x]) == data->opponent)
+			if (ft_toupper(data->map.board[y][x]) == data->opponent.ch)
 			{
-				data->heatmap[y][x] = -1;
-				if (x > data->max_x)
-					data->max_x = x;
-				else if (x < data->min_x)
-					data->min_x = x;
-				if (y > data->max_y)
-					data->max_y = y;
-				else if (y < data->min_y)
-					data->min_y = y;
+				data->map.heatmap[y][x] = -1;
+				if (x > data->opponent.max_x)
+					data->opponent.max_x = x;
+				else if (x < data->opponent.min_x)
+					data->opponent.min_x = x;
+				if (y > data->opponent.max_y)
+					data->opponent.max_y = y;
+				else if (y < data->opponent.min_y)
+					data->opponent.min_y = y;
+			}
+			else if (data->init_flag == 0 && ft_toupper(data->map.board[y][x]) == data->player.ch)
+			{
+				data->player.init_x = x;
+				data->player.init_y = y;
+				data->init_flag = 1;
 			}
 			x++;
 		}
 		y++;
 	}
 	set_cross(data);
-	fill_heatmap(data, 8);
+	set_box(data);
+	fill_heatmap(data, 32);
 }

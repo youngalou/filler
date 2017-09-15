@@ -12,6 +12,47 @@
 
 #include "../filler.h"
 
+void	set_piece(t_filler *data)
+{
+	int		i;
+	char	*line;
+
+	data->piece.piece = (char **)malloc(sizeof(char *) * data->piece.size_y);
+	i = 0;
+	while (i < data->piece.size_y)
+	{
+		data->piece.piece[i] = ft_strnew(data->piece.size_x);
+		i++;
+	}
+	i = 0;
+	while (i < data->piece.size_y)
+	{
+		get_next_line(STDIN_FILENO, &line);
+		ft_memcpy(data->piece.piece[i], line, data->piece.size_x);
+		ft_strdel(&line);
+		i++;
+	}
+}
+
+void	get_piece(t_filler *data)
+{
+	char	*line;
+	int		i;
+
+	get_next_line(STDIN_FILENO, &line);
+	i = 0;
+	while (!ft_isdigit(line[i]))
+		i++;
+	data->piece.size_y = ft_atoi(&line[i]);
+	while (ft_isdigit(line[i]))
+		i++;
+	while (!ft_isdigit(line[i]))
+		i++;
+	data->piece.size_x = ft_atoi(&line[i]);
+	ft_strdel(&line);
+	set_piece(data);
+}
+
 void	skip_line(char **line)
 {
 	if (!ft_strncmp(*line, "Plateau", 7))
@@ -28,51 +69,10 @@ void	read_map(t_filler *data)
 	char	*line;
 
 	i = 0;
-	while (i < data->map_y)
+	while (i < data->map.bound_y)
 	{
 		get_next_line(STDIN_FILENO, &line);
-		ft_memcpy(data->map[i], &line[4], data->map_x);
-		ft_strdel(&line);
-		i++;
-	}
-}
-
-void	get_piece(t_filler *data)
-{
-	char	*line;
-	int		i;
-
-	get_next_line(STDIN_FILENO, &line);
-	i = 0;
-	while (!ft_isdigit(line[i]))
-		i++;
-	data->piece_x = ft_atoi(&line[i]);
-	while (ft_isdigit(line[i]))
-		i++;
-	while (!ft_isdigit(line[i]))
-		i++;
-	data->piece_y = ft_atoi(&line[i]);
-	ft_strdel(&line);
-	set_piece(data);
-}
-
-void	set_piece(t_filler *data)
-{
-	int		i;
-	char	*line;
-
-	data->piece = (char **)malloc(sizeof(char *) * data->piece_y);
-	i = 0;
-	while (i < data->piece_y)
-	{
-		data->piece[i] = ft_strnew(data->piece_x);
-		i++;
-	}
-	i = 0;
-	while (i < data->piece_y)
-	{
-		get_next_line(STDIN_FILENO, &line);
-		ft_memcpy(data->piece[i], line, data->piece_x);
+		ft_memcpy(data->map.board[i], &line[4], data->map.bound_x);
 		ft_strdel(&line);
 		i++;
 	}
