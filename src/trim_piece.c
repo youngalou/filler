@@ -105,6 +105,8 @@ void	set_newpiece(t_filler *data)
 	margin[1] = get_leftmargin(data);
 	margin[2] = get_bottommargin(data);
 	margin[3] = get_rightmargin(data);
+	data->piece.margin_x = margin[1];
+	data->piece.margin_y = margin[0];
 	data->piece.trim_y = margin[2] - margin[0] + 1;
 	data->piece.trim_x = margin[3] - margin[1] + 1;
 	data->piece.trimmed = (char**)malloc(sizeof(char*) * data->piece.trim_y);

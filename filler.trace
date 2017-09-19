@@ -1,5 +1,6 @@
-seed = 8311
-X: error on input
+seed = 6308
+O: error on input
+./filler: Segfault at 1
 players/abanlin.filler won
 Score:
-8AGAINST7
+1AGAINST1

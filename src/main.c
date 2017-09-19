@@ -23,10 +23,10 @@ void	print_map(t_filler *data)
 		x = 0;
 		while (x < data->map.bound_x)
 		{
-			ft_printf("%4d", data->map.heatmap[y][x]);
+			ft_dprintf(2, "%c ", data->map.board[y][x]);
 			x++;
 		}
-		ft_printf("\n");
+		ft_dprintf(2, "\n");
 		y++;
 	}
 }
@@ -42,10 +42,10 @@ void	print_piece(t_filler *data)
 		x = 0;
 		while (x < data->piece.trim_x)
 		{
-			ft_printf("%c ", data->piece.trimmed[y][x]);
+			ft_dprintf(2, "%c ", data->piece.trimmed[y][x]);
 			x++;
 		}
-		ft_printf("\n");
+		ft_dprintf(2, "\n");
 		y++;
 	}
 }
@@ -115,6 +115,9 @@ t_filler	*init_data(void)
 	data->opponent.min_x = INT_MAX;
 	data->opponent.min_y = INT_MAX;
 	data->init_flag = 0;
+	data->place_x = 0;
+	data->place_y = 0;
+	data->heat = 0;
 	return (data);
 }
 
@@ -134,6 +137,7 @@ int     main(void)
 		print_map(data);
 		get_piece(data);
 		set_newpiece(data);
+		place_piece(data);
 		print_piece(data);
 	}
 	return (0);

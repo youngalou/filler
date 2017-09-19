@@ -18,6 +18,7 @@ FILES = main.c \
 		read.c \
 		heatmap.c \
 		trim_piece.c \
+		place_piece.c \
 
 SRC = $(addprefix src/, $(FILES))
 

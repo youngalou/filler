@@ -12,8 +12,8 @@
 
 #include "libft/superlibft.h"
 
-# define HEATMAX 100
-# define DIV 2
+# define HEATMAX 1000
+# define DIV 1.5
 
 typedef struct		s_player
 {
@@ -53,6 +53,8 @@ typedef struct		s_piece
 	char			**trimmed;
 	int 			trim_x;
 	int 			trim_y;
+	int 			margin_x;
+	int				margin_y;
 }					t_piece;
 
 typedef struct      	s_filler
@@ -62,6 +64,9 @@ typedef struct      	s_filler
 	struct s_map		map;
 	struct s_piece		piece;
 	int					init_flag;
+	int					place_x;
+	int 				place_y;
+	int 				heat;
 }                   	t_filler;
 
 /*
@@ -102,3 +107,5 @@ void		set_newpiece(t_filler *data);
 /*
 ** --------------- place_piece.c --------------
 */
+
+void		place_piece(t_filler *data);
