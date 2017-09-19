@@ -31,6 +31,25 @@ void	print_map(t_filler *data)
 	}
 }
 
+void	print_heatmap(t_filler *data)
+{
+	int		y;
+	int 	x;
+
+	y = 0;
+	while (y < data->map.bound_y)
+	{
+		x = 0;
+		while (x < data->map.bound_x)
+		{
+			ft_dprintf(2, "%5d", data->map.heatmap[y][x]);
+			x++;
+		}
+		ft_dprintf(2, "\n");
+		y++;
+	}
+}
+
 void	print_piece(t_filler *data)
 {
 	int		y;
@@ -135,10 +154,11 @@ int     main(void)
 		read_map(data);
 		set_heatmap(data);
 		print_map(data);
+		print_heatmap(data);
 		get_piece(data);
 		set_newpiece(data);
-		place_piece(data);
 		print_piece(data);
+		place_piece(data);
 	}
 	return (0);
 }

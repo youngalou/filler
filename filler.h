@@ -73,6 +73,8 @@ typedef struct      	s_filler
 ** --------------- main.c --------------
 */
 
+void		print_map(t_filler *data);
+void		print_heatmap(t_filler *data);
 void		set_map(t_filler *data);
 void		get_map(t_filler *data);
 void		get_player(t_filler *data);

@@ -83,8 +83,8 @@ void    place_piece(t_filler *data)
                 if (heat > data->heat)
                 {
                     data->heat = heat;
-                    data->place_x = x;// - data->piece.margin_x;
-                    data->place_y = y;// - data->piece.margin_y;
+                    data->place_x = x - data->piece.margin_x;
+                    data->place_y = y - data->piece.margin_y;
                 }
             }
             x++;
@@ -92,5 +92,6 @@ void    place_piece(t_filler *data)
         y++;
     }
     ft_dprintf(1, "%d %d\n", data->place_y, data->place_x);
+    //ft_dprintf(2, "%d %d\n", data->place_y, data->place_x);
     data->heat = 0;
 }
