@@ -69,6 +69,7 @@ void    place_piece(t_filler *data)
     int     y;
     int     x;
 
+    data->heat = -1;
     heat = 0;
     y = 0;
     while (y <= data->map.bound_y - data->piece.trim_y)
@@ -76,7 +77,6 @@ void    place_piece(t_filler *data)
         x = 0;
         while (x <= data->map.bound_x - data->piece.trim_x)
         {
-            //ft_printf("%d\t%d\n", y, x);
             if (check_place(data, x, y))
             {
                 heat = check_heat(data, x, y);
@@ -92,6 +92,4 @@ void    place_piece(t_filler *data)
         y++;
     }
     ft_dprintf(1, "%d %d\n", data->place_y, data->place_x);
-    //ft_dprintf(2, "%d %d\n", data->place_y, data->place_x);
-    data->heat = 0;
 }

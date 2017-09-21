@@ -42,7 +42,10 @@ void	print_heatmap(t_filler *data)
 		x = 0;
 		while (x < data->map.bound_x)
 		{
-			ft_dprintf(2, "%5d", data->map.heatmap[y][x]);
+			if (data->map.heatmap[y][x] >= 5000)
+				ft_dprintf(2, "%{red}5d%{eoc}", data->map.heatmap[y][x]);
+			else
+				ft_dprintf(2, "%5d", data->map.heatmap[y][x]);
 			x++;
 		}
 		ft_dprintf(2, "\n");
@@ -104,8 +107,8 @@ void	get_map(t_filler *data)
 	while (!ft_isdigit(line[i]))
 		i++;
 	data->map.bound_x = ft_atoi(&line[i]);
-	data->map.range_y = data->map.bound_y / 3;
-	data->map.range_x = data->map.bound_x / 6;
+	data->map.range_y = 1;
+	data->map.range_x = 1;
 	set_map(data);
 	ft_strdel(&line);
 }
@@ -133,10 +136,10 @@ t_filler	*init_data(void)
 	data->opponent.max_y = 0;
 	data->opponent.min_x = INT_MAX;
 	data->opponent.min_y = INT_MAX;
-	data->init_flag = 0;
 	data->place_x = 0;
 	data->place_y = 0;
 	data->heat = 0;
+	data->init_flag = 0;
 	return (data);
 }
 
@@ -153,11 +156,11 @@ int     main(void)
 		skip_line(&line);
 		read_map(data);
 		set_heatmap(data);
-		print_map(data);
-		print_heatmap(data);
+		//print_map(data);
+		//print_heatmap(data);
 		get_piece(data);
 		set_newpiece(data);
-		print_piece(data);
+		//print_piece(data);
 		place_piece(data);
 	}
 	return (0);

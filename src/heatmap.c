@@ -23,46 +23,13 @@ void	set_cross(t_filler *data)
 	i = 0;
 	while (i < data->map.bound_x)
 	{
-		data->map.heatmap[y][i] = 1;
+		data->map.heatmap[y][i] = HEATMAX / DIV;
 		i++;
 	}
 	i = 0;
 	while (i < data->map.bound_y)
 	{
-		data->map.heatmap[i][x] = 1;
-		i++;
-	}
-}
-
-void	set_box(t_filler *data)
-{
-	int		max_x;
-	int		max_y;
-	int		min_x;
-	int 	min_y;
-	int 	i;
-
-	max_x = data->opponent.max_x + data->map.range_x;
-	max_y = data->opponent.max_x + data->map.range_y;
-	min_x = data->opponent.min_x - data->map.range_x;
-	min_y = data->opponent.min_y - data->map.range_y;
-	ft_dprintf(2, "%d\t%d\t%d\t%d\n", max_x, max_y, min_x, min_y);
-	i = (min_y >= 0) ? min_y : 0;
-	while (i <= max_y && i < data->map.bound_y)
-	{
-		if (max_x < data->map.bound_x)
-			data->map.heatmap[i][max_x] = HEATMAX;
-		if (min_x >= 0)
-			data->map.heatmap[i][min_x] = HEATMAX;
-		i++;
-	}
-	i = (min_x >= 0) ? min_x : 0;
-	while (i <= max_x && i < data->map.bound_x)
-	{
-		if (max_y < data->map.bound_y)
-			data->map.heatmap[max_y][i] = HEATMAX;
-		if (min_y >= 0)
-			data->map.heatmap[min_y][i] = HEATMAX;
+		data->map.heatmap[i][x] = HEATMAX / DIV;
 		i++;
 	}
 }
@@ -132,7 +99,7 @@ void	set_heatmap(t_filler *data)
 		{
 			if (ft_toupper(data->map.board[y][x]) == data->opponent.ch)
 			{
-				data->map.heatmap[y][x] = -1;
+				data->map.heatmap[y][x] = 5000;
 				if (x > data->opponent.max_x)
 					data->opponent.max_x = x;
 				if (x < data->opponent.min_x)
@@ -152,8 +119,7 @@ void	set_heatmap(t_filler *data)
 		}
 		y++;
 	}
-	ft_dprintf(2, "%d\t%d\n", y, x);
-	//set_cross(data);
-	set_box(data);
-	fill_heatmap(data, 1028);
+	fill_heatmap(data, ITER);
+	if (data->map.bound_x > 75 && data->map.bound_y > 75)
+		set_cross(data);
 }

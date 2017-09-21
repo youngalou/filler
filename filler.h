@@ -12,8 +12,9 @@
 
 #include "libft/superlibft.h"
 
-# define HEATMAX 1000
-# define DIV 1.5
+# define HEATMAX 5000
+# define DIV 1.1
+# define ITER INT_MAX
 
 typedef struct		s_player
 {
@@ -59,14 +60,14 @@ typedef struct		s_piece
 
 typedef struct      	s_filler
 {
-    struct s_player		player;
-    struct s_opponent	opponent;
+	struct s_player		player;
+	struct s_opponent	opponent;
 	struct s_map		map;
 	struct s_piece		piece;
-	int					init_flag;
 	int					place_x;
 	int 				place_y;
 	int 				heat;
+	int					init_flag;
 }                   	t_filler;
 
 /*
