@@ -12,67 +12,7 @@
 
 #include "../filler.h"
 
-void	print_map(t_filler *data)
-{
-	int		y;
-	int 	x;
-
-	y = 0;
-	while (y < data->map.bound_y)
-	{
-		x = 0;
-		while (x < data->map.bound_x)
-		{
-			ft_dprintf(2, "%c ", data->map.board[y][x]);
-			x++;
-		}
-		ft_dprintf(2, "\n");
-		y++;
-	}
-}
-
-void	print_heatmap(t_filler *data)
-{
-	int		y;
-	int 	x;
-
-	y = 0;
-	while (y < data->map.bound_y)
-	{
-		x = 0;
-		while (x < data->map.bound_x)
-		{
-			if (data->map.heatmap[y][x] >= 5000)
-				ft_dprintf(2, "%{red}5d%{eoc}", data->map.heatmap[y][x]);
-			else
-				ft_dprintf(2, "%5d", data->map.heatmap[y][x]);
-			x++;
-		}
-		ft_dprintf(2, "\n");
-		y++;
-	}
-}
-
-void	print_piece(t_filler *data)
-{
-	int		y;
-	int		x;
-
-	y = 0;
-	while (y < data->piece.trim_y)
-	{
-		x = 0;
-		while (x < data->piece.trim_x)
-		{
-			ft_dprintf(2, "%c ", data->piece.trimmed[y][x]);
-			x++;
-		}
-		ft_dprintf(2, "\n");
-		y++;
-	}
-}
-
-void	set_map(t_filler *data)
+void		set_map(t_filler *data)
 {
 	int		i;
 
@@ -92,7 +32,7 @@ void	set_map(t_filler *data)
 	}
 }
 
-void	get_map(t_filler *data)
+void		get_map(t_filler *data)
 {
 	char	*line;
 	int		i;
@@ -113,7 +53,7 @@ void	get_map(t_filler *data)
 	ft_strdel(&line);
 }
 
-void	get_player(t_filler *data)
+void		get_player(t_filler *data)
 {
 	char	*line;
 	char	*tmp;
@@ -131,6 +71,7 @@ void	get_player(t_filler *data)
 t_filler	*init_data(void)
 {
 	t_filler	*data;
+
 	data = (t_filler*)malloc(sizeof(t_filler));
 	data->opponent.max_x = 0;
 	data->opponent.max_y = 0;
@@ -143,9 +84,9 @@ t_filler	*init_data(void)
 	return (data);
 }
 
-int     main(void)
+int			main(void)
 {
-    t_filler	*data;
+	t_filler	*data;
 	char		*line;
 
 	data = init_data();
@@ -153,14 +94,10 @@ int     main(void)
 	get_map(data);
 	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
-		skip_line(&line);
-		read_map(data);
+		read_map(data, line);
 		set_heatmap(data);
-		//print_map(data);
-		//print_heatmap(data);
 		get_piece(data);
 		set_newpiece(data);
-		//print_piece(data);
 		place_piece(data);
 	}
 	return (0);

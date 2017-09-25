@@ -14,7 +14,6 @@
 
 # define HEATMAX 5000
 # define DIV 1.1
-# define ITER INT_MAX
 
 typedef struct		s_player
 {
@@ -68,14 +67,13 @@ typedef struct      	s_filler
 	int 				place_y;
 	int 				heat;
 	int					init_flag;
+	int					overlap;
 }                   	t_filler;
 
 /*
 ** --------------- main.c --------------
 */
 
-void		print_map(t_filler *data);
-void		print_heatmap(t_filler *data);
 void		set_map(t_filler *data);
 void		get_map(t_filler *data);
 void		get_player(t_filler *data);
@@ -85,16 +83,18 @@ t_filler	*init_data(void);
 ** --------------- read.c --------------
 */
 
-void		skip_line(char **line);
-void		read_map(t_filler *data);
-void		get_piece(t_filler *data);
 void		set_piece(t_filler *data);
+void		get_piece(t_filler *data);
+void		read_map(t_filler *data, char *line);
 
 /*
 ** --------------- heatmap.c --------------
 */
 
+void		set_cross(t_filler *data);
+void		fill_adjacent(t_filler *data, int x, int y);
 void		fill_heatmap(t_filler *data, int level);
+void		init_heatmap(t_filler *data, int x, int y);
 void		set_heatmap(t_filler *data);
 
 /*
@@ -111,4 +111,16 @@ void		set_newpiece(t_filler *data);
 ** --------------- place_piece.c --------------
 */
 
+int			check_place(t_filler *data, int x, int y);
+int			check_heat(t_filler *data, int x, int y);
 void		place_piece(t_filler *data);
+
+/*
+** --------------- extra.c --------------
+*/
+
+void		print_piece(t_filler *data);
+void		print_map(t_filler *data);
+void		print_heatmap(t_filler *data);
+void		clear_heatmap(t_filler *data);
+void		set_trimpiece(t_filler *data, int *margin);

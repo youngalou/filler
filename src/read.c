@@ -53,21 +53,16 @@ void	get_piece(t_filler *data)
 	set_piece(data);
 }
 
-void	skip_line(char **line)
-{
-	if (!ft_strncmp(*line, "Plateau", 7))
-	{
-		ft_strdel(line);
-		get_next_line(STDIN_FILENO, line);
-		ft_strdel(line);
-	}
-}
-
-void	read_map(t_filler *data)
+void	read_map(t_filler *data, char *line)
 {
 	int		i;
-	char	*line;
 
+	if (!ft_strncmp(line, "Plateau", 7))
+	{
+		ft_strdel(&line);
+		get_next_line(STDIN_FILENO, &line);
+		ft_strdel(&line);
+	}
 	i = 0;
 	while (i < data->map.bound_y)
 	{
