@@ -6,7 +6,7 @@
 /*   By: lyoung <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/23 12:53:39 by lyoung            #+#    #+#             */
-/*   Updated: 2017/08/23 12:56:29 by lyoung           ###   ########.fr       */
+/*   Updated: 2017/09/26 14:00:47 by lyoung           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ void		set_map(t_filler *data)
 	}
 }
 
-void		get_map(t_filler *data)
+int			get_map(t_filler *data)
 {
 	char	*line;
 	int		i;
 
-	get_next_line(STDIN_FILENO, &line);
+	if (get_next_line(STDIN_FILENO, &line) < 0)
+		return (-1);
 	i = 0;
 	while (!ft_isdigit(line[i]))
 		i++;
@@ -51,21 +52,26 @@ void		get_map(t_filler *data)
 	data->map.range_x = 1;
 	set_map(data);
 	ft_strdel(&line);
+	return (0);
 }
 
-void		get_player(t_filler *data)
+int			get_player(t_filler *data)
 {
 	char	*line;
 	char	*tmp;
 	int		nb;
 
-	get_next_line(STDIN_FILENO, &line);
+	if (get_next_line(STDIN_FILENO, &line) < 0)
+		return (-1);
 	tmp = ft_strchr(line, 'p');
+	if (!tmp)
+		return (-1);
 	tmp++;
 	nb = ft_atoi(tmp);
 	data->player.ch = (nb == 1) ? 'O' : 'X';
 	data->opponent.ch = (nb == 1) ? 'X' : 'O';
 	ft_strdel(&line);
+	return (0);
 }
 
 t_filler	*init_data(void)
@@ -90,13 +96,18 @@ int			main(void)
 	char		*line;
 
 	data = init_data();
-	get_player(data);
-	get_map(data);
+	if (get_player(data) < 0 || get_map(data) < 0)
+	{
+		ft_printf("%{red}Invalid file.\n%{eoc}");
+		return (0);
+	}
 	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
-		read_map(data, line);
+		if (read_map(data, line) < 0)
+			return (0);
 		set_heatmap(data);
-		get_piece(data);
+		if (get_piece(data) < 0)
+			return (0);
 		set_newpiece(data);
 		place_piece(data);
 	}
